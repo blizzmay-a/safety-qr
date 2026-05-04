@@ -1,58 +1,97 @@
-function generateQR() {
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const snsType = document.getElementById('sns-type').value;
-    const snsId = document.getElementById('sns-id').value.trim();
-    const qrcodeContainer = document.getElementById('qrcode');
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Square | QR Card Maker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; background-color: #fff; color: #333; margin: 0; }
+        h1 { font-weight: 700; letter-spacing: -1px; margin-bottom: 25px; }
+        
+        .input-group { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        
+        .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-top: 10px; }
+        .btn-black:hover { opacity: 0.8; }
 
-    if (!name) {
-        alert("Please enter your name.");
-        return;
-    }
-
-    // 1. 이메일 형식 검증 (선택 입력이지만 입력 시 체크)
-    if (email !== "") {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-        if (!emailPattern.test(email)) {
-            alert("Please enter a valid email address.");
-            return;
+        /* 결과 및 카드 레이아웃 */
+        #result-area { display: none; margin-top: 40px; text-align: center; }
+        
+        #print-card { 
+            width: 8.5cm; height: 5.4cm; 
+            border: 1px solid #000; border-radius: 15px; 
+            padding: 0.6cm 0.5cm; box-sizing: border-box;
+            background: #fff; margin: 0 auto; 
+            position: relative; overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
         }
-    }
 
-    // 2. QR 코드 생성
-    qrcodeContainer.innerHTML = "";
-    const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + "view.html";
-    const params = new URLSearchParams({ n: name, p: phone, e: email, s: snsType, i: snsId });
-    
-    new QRCode(qrcodeContainer, {
-        text: `${baseUrl}?${params.toString()}`,
-        width: 85,
-        height: 85,
-        colorDark : "#000000",
-        colorLight : "#ffffff"
-    });
+        .card-title { margin: 0 0 25px 0; font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
+        
+        .field-row { display: flex; align-items: flex-end; margin-bottom: 12px; font-size: 11px; font-weight: bold; }
+        .label { min-width: 130px; display: inline-block; }
+        .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; min-height: 14px; }
 
-    // 3. 카드 서식에 텍스트 채우기
-    document.getElementById('p-name').innerText = name;
-    document.getElementById('p-phone').innerText = phone;
-    document.getElementById('p-email').innerText = email;
-    document.getElementById('p-sns-type').innerText = snsType;
-    document.getElementById('p-sns-id').innerText = snsId;
-
-    // 4. 결과창 표시
-    document.getElementById('result-area').style.display = "block";
-
-    // 5. QR 다운로드 기능 연결
-    setTimeout(() => {
-        const img = qrcodeContainer.querySelector('img');
-        if (img) {
-            document.getElementById('download-btn').onclick = function() {
-                const link = document.createElement('a');
-                link.href = img.src;
-                link.download = `MinimalSquare_QR_${name}.png`;
-                link.click();
-            };
+        /* QR 코드 영역 (회색 네모 위치) */
+        #qrcode-wrapper {
+            position: absolute; right: 0.5cm; top: 1.5cm;
+            width: 85px; height: 85px; 
+            display: flex; align-items: center; justify-content: center;
         }
-    }, 500);
-}
+
+        .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
+        .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
+
+        /* 인쇄 설정 */
+        @media print {
+            body * { visibility: hidden; }
+            #print-card, #print-card * { visibility: visible; }
+            #print-card { 
+                position: absolute; left: 0; top: 0; 
+                border: 1px solid #000 !important; 
+                box-shadow: none;
+            }
+            @page { size: 8.5cm 5.4cm; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>MINIMAL SQUARE</h1>
+    <div class="input-group">
+        <input type="text" id="name" placeholder="Name">
+        <input type="tel" id="phone" placeholder="Phone">
+        <input type="email" id="email" placeholder="Mail">
+        <select id="sns-type">
+            <option value="">SNS / Messenger</option>
+            <option value="Instagram">Instagram</option>
+            <option value="KakaoTalk">KakaoTalk</option>
+            <option value="Line">Line</option>
+        </select>
+        <input type="text" id="sns-id" placeholder="SNS / Messenger ID">
+        <button class="btn-black" onclick="generateQR()">Make QR Code</button>
+    </div>
+
+    <div id="result-area">
+        <div id="print-card">
+            <div class="card-title">Personal Identification</div>
+            
+            <div class="field-row"><span class="label">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-name" class="line"></span></div>
+            <div class="field-row"><span class="label">Phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-phone" class="line"></span></div>
+            <div class="field-row"><span class="label">Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-email" class="line"></span></div>
+            <div class="field-row" style="margin-top:15px;"><span class="label">SNS / Messenger&nbsp;&nbsp;&nbsp;:</span><span id="p-sns-type" class="line"></span></div>
+            <div class="field-row"><span class="label">SNS / Messenger ID :</span><span id="p-sns-id" class="line"></span></div>
+
+            <div id="qrcode-wrapper"><div id="qrcode"></div></div>
+        </div>
+
+        <div class="action-btns">
+            <button class="sub-btn" onclick="window.print()">Print Card</button>
+            <button id="download-btn" class="sub-btn">Save QR Image</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
