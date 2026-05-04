@@ -3,23 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Square | Safety QR</title>
+    <title>Minimal Square | Contact Owner</title>
     <style>
         body { font-family: 'Apple SD Gothic Neo', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #ffffff; color: #333; }
         .card { width: 85%; max-width: 400px; text-align: center; border: 1px solid #eee; padding: 40px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .quote { font-style: italic; font-size: 1.2rem; margin-bottom: 25px; color: #111; }
+        .message { font-size: 0.95rem; color: #666; margin-bottom: 30px; line-height: 1.6; word-break: keep-all; }
+        
+        /* 정보 상자 스타일 */
         .info-box { background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 12px; text-align: left; display: none; }
         .label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
-        .value { font-size: 1.05rem; font-weight: 500; color: #000; }
+        .value { font-size: 1.05rem; font-weight: 500; color: #000; word-break: break-all; }
+
+        /* 버튼 그룹 스타일 */
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
+        .btn { padding: 15px; border-radius: 50px; font-weight: 500; text-decoration: none; text-align: center; transition: 0.2s; font-size: 0.95rem; }
+        .btn-black { background: #000; color: #fff; }
+        .btn-white { background: #fff; color: #000; border: 1px solid #000; }
+        .btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div id="box-n" class="info-box"><div class="label">Name</div><div id="v-n" class="value"></div></div>
-        <div id="box-s" class="info-box"><div class="label">SNS</div><div id="v-s" class="value"></div></div>
-        <div id="box-i" class="info-box"><div class="label">ID</div><div id="v-i" class="value"></div></div>
-        <div id="box-e" class="info-box"><div class="label">Mail</div><div id="v-e" class="value"></div></div>
-        <div id="box-p" class="info-box"><div class="label">Phone</div><div id="v-p" class="value"></div></div>
+        <div class="quote">"May your kindness return to you."</div>
+        <div class="message">이 물건을 발견해주셔서 감사합니다.<br>Thank you for finding this item.</div>
+        
+        <!-- 정보 출력 영역 -->
+        <div id="box-n" class="info-box"><div class="label">Owner Name</div><div id="v-n" class="value"></div></div>
+        <div id="box-s" class="info-box"><div class="label">SNS / Messenger</div><div id="v-s" class="value"></div></div>
+        <div id="box-i" class="info-box"><div class="label">SNS ID</div><div id="v-i" class="value"></div></div>
+        <div id="box-e" class="info-box"><div class="label">Email Address</div><div id="v-e" class="value"></div></div>
+        <div id="box-p" class="info-box"><div class="label">Phone Number</div><div id="v-p" class="value"></div></div>
+
+        <!-- 연락 실행 버튼 (js에서 제어) -->
+        <div class="btn-group">
+            <a id="call-link" href="#" class="btn btn-black">Call Owner</a>
+            <a id="mail-link" href="#" class="btn btn-white">Send Email</a>
+        </div>
     </div>
+
+    <!-- 로직 연결 -->
     <script src="view.js"></script>
 </body>
 </html>
