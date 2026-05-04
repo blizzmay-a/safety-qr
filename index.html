@@ -6,49 +6,31 @@
     <title>Minimal Square | QR Maker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        /* 초기 본고딕(Noto Sans KR) 폰트 설정 복구 */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 
-        body { 
-            font-family: 'Noto Sans KR', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 40px 20px; 
-            background-color: #fff; 
-            color: #333; 
-            margin: 0; 
-        }
+        body { font-family: 'Noto Sans KR', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; background-color: #fff; color: #333; margin: 0; }
         h1 { font-weight: 700; letter-spacing: -1px; margin-bottom: 25px; }
         .input-group { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
         input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-top: 10px; }
         
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
-        
         #print-card { 
             width: 8.5cm; height: 5.4cm; border: 1px solid #000; border-radius: 12px; 
             padding: 0; box-sizing: border-box; background: #fff; margin: 0 auto; 
             display: flex; flex-direction: column; justify-content: center;
             position: relative; overflow: hidden; text-align: left;
-            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .card-inner { padding: 0 0.5cm; }
-        
-        .card-title { 
-            margin: 0 0 16px 0; 
-            font-size: 16px; 
-            font-weight: 900; 
-            letter-spacing: -0.5px;
-        }
+        .card-title { margin: 0 0 16px 0; font-size: 16px; font-weight: 900; letter-spacing: -0.5px; }
         
         .field-row { 
             display: flex; 
             align-items: flex-end; 
             margin-bottom: 7px; 
             font-size: 13.3px; 
-            font-weight: 700; 
+            font-weight: 400; 
             height: 19px; 
         }
         
@@ -57,20 +39,26 @@
         .line { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px; 
             min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; 
-            font-size: 12px; color: #000; font-weight: 400;
+            font-size: 13.3px; color: #000; font-weight: 700;
             line-height: 1.2; vertical-align: bottom;
         }
         .line-full { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px;
             min-height: 16px; margin-right: 0; white-space: nowrap; overflow: hidden; 
-            font-size: 12px; color: #000; font-weight: 400;
+            font-size: 13.3px; color: #000; font-weight: 700;
             line-height: 1.2; vertical-align: bottom;
         }
 
-        #qrcode-wrapper {
-            position: absolute; right: 0.4cm; top: 1.58cm; 
-            width: 75px; height: 75px;
-            display: flex; align-items: center; justify-content: center;
+        /* [수정] QR 위치를 내려서 ID 라인의 밑줄과 아랫단을 맞춤 */
+        #qrcode-wrapper { 
+            position: absolute; 
+            right: 0.4cm; 
+            top: 1.78cm; /* 기존 1.58cm에서 약 2mm(0.2cm) 하향 조정 */
+            width: 75px; 
+            height: 75px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
 
         .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
@@ -88,7 +76,6 @@
     <h1>Minimal Square</h1>
     <div class="input-group">
         <input type="text" id="name" placeholder="Name (Required)">
-        <!-- 조건 1: 숫자와 +,-만 허용 -->
         <input type="tel" id="phone" placeholder="Phone (+, -, numbers only)" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')">
         <input type="text" id="sns-type" placeholder="Social Type (e.g. Kakao, Insta)">
         <input type="text" id="sns-id" placeholder="Social ID">
@@ -108,7 +95,6 @@
             </div>
             <div id="qrcode-wrapper"><div id="qrcode"></div></div>
         </div>
-
         <div class="action-btns">
             <button class="sub-btn" onclick="window.print()">Print Card</button>
             <button id="download-btn" class="sub-btn">Save QR Image</button>
@@ -123,36 +109,17 @@
             const snsId = document.getElementById('sns-id').value.trim();
             const email = document.getElementById('email').value.trim();
 
-            // 1. 이름 필수 체크
             if (!name) { alert("이름을 입력해주세요."); return; }
+            if (!phone && !email && !snsType && !snsId) { alert("연락처를 하나 이상 입력해주세요."); return; }
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("올바른 이메일 형식이 아닙니다."); return; }
+            if ((snsType && !snsId) || (!snsType && snsId)) { alert("SNS 정보를 모두 입력해주세요."); return; }
 
-            // 2. 조건: 전화번호, 소셜, 메일 중 최소 하나는 입력
-            if (!phone && !email && !snsType && !snsId) {
-                alert("Phone, Social, Mail 중 최소 하나는 입력해야 합니다.");
-                return;
-            }
-
-            // 3. 조건: 메일 형식 체크 (@와 . 포함)
-            if (email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert("올바른 이메일 형식이 아닙니다. (@와 .을 포함해주세요)");
-                    return;
-                }
-            }
-
-            // 4. 조건: 소셜 종류 입력 시 ID 필수, ID만 입력은 불가
-            if (snsType && !snsId) { alert("SNS ID를 입력해주세요."); return; }
-            if (!snsType && snsId) { alert("SNS 종류를 입력해주세요."); return; }
-
-            // 화면 출력 로직 (데이터가 없으면 공백 유지하여 레이아웃 고정)
             document.getElementById('p-name').innerText = name;
             document.getElementById('p-phone').innerText = phone || " ";
             document.getElementById('p-sns-type').innerText = snsType || " ";
             document.getElementById('p-sns-id').innerText = snsId || " ";
             document.getElementById('p-email').innerText = email || " ";
 
-            // QR 생성
             const baseUrl = "https://minimalsquare.github.io/safety-qr/view.html"; 
             const queryParams = `?n=${encodeURIComponent(name)}&p=${encodeURIComponent(phone)}&s=${encodeURIComponent(snsType)}&i=${encodeURIComponent(snsId)}&e=${encodeURIComponent(email)}`;
             
