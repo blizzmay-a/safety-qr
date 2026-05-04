@@ -1,38 +1,48 @@
 function generateQR() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const snsType = document.getElementById('sns-type').value;
-            const snsId = document.getElementById('sns-id').value;
-            const email = document.getElementById('email').value;
+    // 1. 입력창에서 데이터 가져오기
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const snsType = document.getElementById('sns-type').value;
+    const snsId = document.getElementById('sns-id').value;
+    const email = document.getElementById('email').value;
 
-            document.getElementById('p-name').innerText = name;
-            document.getElementById('p-phone').innerText = phone;
-            document.getElementById('p-sns-type').innerText = snsType;
-            document.getElementById('p-sns-id').innerText = snsId;
-            
-            // 1. 큐알 인식률을 위해 메시지를 핵심만 담아 짧게 줄였습니다.
-            const subject = encodeURIComponent("Found Passport Wallet");
-            const body = encodeURIComponent("Hello, I found your wallet. Please reply with your contact number.");
-            const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+    // 2. 카드 미리보기 텍스트 업데이트 (시각적 확인용)
+    document.getElementById('p-name').innerText = name;
+    document.getElementById('p-phone').innerText = phone;
+    document.getElementById('p-sns-type').innerText = snsType;
+    document.getElementById('p-sns-id').innerText = snsId;
+    document.getElementById('p-email').innerText = email;
+    
+    // 3. [핵심] QR에 담을 뷰 페이지 URL 생성
+    // 정민님의 실제 도메인 주소로 꼭 수정하세요! (예: https://minimalsquare.com/view.html)
+    const baseUrl = "https://minimal-square.com/view.html"; 
+    const queryParams = `?n=${encodeURIComponent(name)}&p=${encodeURIComponent(phone)}&s=${encodeURIComponent(snsType)}&i=${encodeURIComponent(snsId)}&e=${encodeURIComponent(email)}`;
+    const finalUrl = baseUrl + queryParams;
 
-            const emailElement = document.getElementById('p-email');
-            emailElement.innerHTML = `<a href="${mailtoLink}" style="text-decoration:none; color:inherit; display:block; width:100%;">${email}</a>`;
+    // 4. QR 코드 생성 (웹 주소를 담으므로 데이터가 짧아져 인식률이 매우 좋습니다)
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = ""; 
+    
+    new QRCode(qrContainer, {
+        text: finalUrl, 
+        width: 75, 
+        height: 75,
+        colorDark: "#000000", 
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L // 점의 밀도를 낮춰 스캔 속도 최적화
+    });
 
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = ""; 
-            
-            try {
-                // 2. 큐알 코드 설정을 '인식 우선' 모드로 변경
-                new QRCode(qrContainer, {
-                    text: mailtoLink,
-                    width: 75,
-                    height: 75,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.L // 점의 밀도를 낮추어 인식 속도를 높임
-                });
-            } catch (e) {
-                console.error(e);
-            }
-            document.getElementById('result-area').style.display = 'block';
-        }
+    // 결과 영역 표시
+    document.getElementById('result-area').style.display = 'block';
+}
+
+// 5. 생성된 QR 이미지 저장 기능
+document.getElementById('download-btn').addEventListener('click', function() {
+    const qrCanvas = document.querySelector('#qrcode canvas');
+    if (qrCanvas) {
+        const link = document.createElement('a');
+        link.download = 'minimal_square_qr.png';
+        link.href = qrCanvas.toDataURL();
+        link.click();
+    }
+});
