@@ -39,4 +39,3 @@ document.getElementById('download-btn').addEventListener('click', function() {
         link.click();
     }
 });
-얘도?
