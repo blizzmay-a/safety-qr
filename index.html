@@ -24,16 +24,16 @@
 
         .card-inner { padding: 0 0.5cm; }
         
-        /* 타이틀: 본문(10pt)보다 2포인트 큰 12pt 수준 (약 16px) */
+        /* 타이틀: 12pt 수준 및 볼드체 적용 */
         .card-title { 
             margin: 0 0 16px 0; 
             font-size: 16px; 
-            font-weight: bold; 
+            font-weight: 900; /* 볼드 강조 */
             font-family: 'Courier New', Courier, monospace; 
             letter-spacing: 0.3px;
         }
         
-        /* 본문 행 (라벨): 10pt (약 13.3px) */
+        /* 본문 라벨: 10pt (약 13.3px) */
         .field-row { 
             display: flex; 
             align-items: flex-end; 
@@ -46,7 +46,7 @@
         
         .label-container { display: flex; width: 62px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 2px; }
 
-        /* 입력 데이터: 9pt (약 12px) 및 수직 정렬 최적화 */
+        /* 입력 데이터: 9pt (약 12px) 및 고딕체 */
         .line { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px; 
             min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; 
