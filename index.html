@@ -14,7 +14,7 @@
         input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-top: 10px; }
         
-        /* 카드 디자인 (8.5cm x 5.4cm 표준 규격) */
+        /* 카드 디자인 (8.5cm x 5.4cm) */
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
         #print-card { 
             width: 8.5cm; height: 5.4cm; border: 1px solid #000; border-radius: 12px; 
@@ -23,19 +23,23 @@
             position: relative; overflow: hidden; text-align: left;
         }
         .card-inner { padding: 0 0.5cm; }
-        .card-title { margin: 0 0 16px 0; font-size: 16px; font-weight: 900; letter-spacing: 1px; } /* 정민님 브랜드 자간 1px 반영 */
-        .field-row { display: flex; align-items: flex-end; margin-bottom: 7px; font-size: 13.3px; font-weight: 400; height: 19px; }
-        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 2px; }
+        .card-title { margin: 0 0 16px 0; font-size: 16px; font-weight: 900; letter-spacing: 1px; }
         
-        /* [중요] 입력 데이터 폰트 크기 상향 (기존 12px -> 13.3px) 및 700 볼드 강조 */
-        .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px; min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1.2; vertical-align: bottom; }
-        .line-full { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px; min-height: 16px; margin-right: 0; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1.2; vertical-align: bottom; }
+        /* 정렬 수정: 입력 정보와 라벨의 수평을 맞추기 위해 align-items 조정 */
+        .field-row { display: flex; align-items: baseline; margin-bottom: 7px; font-size: 13.3px; font-weight: 400; height: 19px; }
+        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; }
+        
+        /* 선 위치 및 텍스트 높이 미세 조정 */
+        .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; margin-right: 85px; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1; display: inline-block; }
+        .line-full { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; margin-right: 0; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1; display: inline-block; }
 
-        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 1.58cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
+        /* QR 위치 수정: Name 라인의 밑줄 지점으로 하향 조정 */
+        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 1.95cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
+        
         .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
         .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
 
-        /* [핵심] 인쇄 최적화 - 다중 페이지 및 여백 문제 해결 */
+        /* 인쇄 최적화 */
         @media print {
             @page { size: 8.5cm 5.4cm; margin: 0; }
             html, body { margin: 0 !important; padding: 0 !important; width: 8.5cm; height: 5.4cm; overflow: hidden; }
@@ -46,7 +50,6 @@
                 box-shadow: none !important; width: 8.5cm; height: 5.4cm;
                 page-break-after: avoid; page-break-inside: avoid;
             }
-            .action-btns, .input-group, h1 { display: none !important; }
         }
     </style>
 </head>
