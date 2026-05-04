@@ -1,46 +1,42 @@
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     
-    // 주소창에서 n, s, i, e, p 라는 이름표를 찾아 읽어옵니다
+    // 정민님의 script.js 파라미터 이름과 1:1 매칭
     const data = {
-        name: urlParams.get('n'),
-        sns: urlParams.get('s'),
-        id: urlParams.get('i'),
-        email: urlParams.get('e'),
-        phone: urlParams.get('p')
+        n: urlParams.get('n'), // Name
+        s: urlParams.get('s'), // SNS Type
+        i: urlParams.get('i'), // SNS ID
+        e: urlParams.get('e'), // Email
+        p: urlParams.get('p')  // Phone
     };
 
-    // 값이 있을 때만 해당 박스를 화면에 띄우는 함수입니다
-    function showField(id, value, boxId) {
-        const targetElement = document.getElementById(id);
-        const targetBox = document.getElementById(boxId);
-        
-        if (value && value.trim() !== "" && targetElement && targetBox) {
-            targetElement.innerText = value;
-            targetBox.style.display = "block"; // 숨겨져 있던 상자를 보이게 함
+    function showField(val, targetId, boxId) {
+        const target = document.getElementById(targetId);
+        const box = document.getElementById(boxId);
+        if (val && val.trim() !== "" && target && box) {
+            target.innerText = val;
+            box.style.display = "block";
         }
     }
 
-    // HTML의 ID들과 토씨 하나 틀리지 않게 연결합니다
-    showField('v-name', data.name, 'box-name');
-    showField('v-sns', data.sns, 'box-sns');
-    showField('v-id', data.id, 'box-id');
-    showField('v-email', data.email, 'box-email');
-    showField('v-phone', data.phone, 'box-phone');
+    // 화면 뿌려주기
+    showField(data.n, 'v-n', 'box-n');
+    showField(data.s, 'v-s', 'box-s');
+    showField(data.i, 'v-i', 'box-i');
+    showField(data.e, 'v-email', 'box-email');
+    showField(data.p, 'v-phone', 'box-phone');
 
-    // 전화 및 이메일 버튼 제어
+    // 버튼 로직
     const callBtn = document.getElementById('call-link');
-    if (data.phone) {
-        callBtn.href = "tel:" + data.phone.replace(/[^0-9+]/g, "");
-        callBtn.style.display = "block";
+    if (data.p) {
+        callBtn.href = "tel:" + data.p.replace(/[^0-9+]/g, "");
     } else {
         callBtn.style.display = "none";
     }
 
     const mailBtn = document.getElementById('mail-link');
-    if (data.email) {
-        mailBtn.href = "mailto:" + data.email;
-        mailBtn.style.display = "block";
+    if (data.e) {
+        mailBtn.href = "mailto:" + data.e;
     } else {
         mailBtn.style.display = "none";
     }
