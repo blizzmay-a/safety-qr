@@ -34,13 +34,18 @@ window.onload = function() {
         callBtn.style.display = "none";
     }
 
-    // 3. 메일 연결 기능
+    // 3. 메일 연결 기능 (상냥한 메시지 포함 버전)
     const email = params.get('e');
     const mailBtn = document.getElementById('mail-link');
+    
     if (email && email.trim() !== "" && mailBtn) {
-        mailBtn.href = "mailto:" + email;
+        // 정민님이 원하신 상냥한 메시지 세팅
+        const subject = encodeURIComponent("Found your Passport Wallet!");
+        const body = encodeURIComponent("Hello,\n\nI found your Minimal Square passport wallet.\nPlease let me know where I can return it to you or leave your contact number here.\n\nHave a wonderful day!");
+        
+        // 버튼 클릭 시 주소+제목+본문이 한꺼번에 뜨도록 설정
+        mailBtn.href = `mailto:${email}?subject=${subject}&body=${body}`;
         mailBtn.style.display = "block";
     } else if (mailBtn) {
         mailBtn.style.display = "none";
     }
-};
