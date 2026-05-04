@@ -5,14 +5,12 @@ function generateQR() {
     const snsId = document.getElementById('sns-id').value;
     const email = document.getElementById('email').value;
 
-    // 카드 미리보기 텍스트 업데이트
     document.getElementById('p-name').innerText = name;
     document.getElementById('p-phone').innerText = phone;
     document.getElementById('p-sns-type').innerText = snsType;
     document.getElementById('p-sns-id').innerText = snsId;
-    document.getElementById('p-email').innerText = email;
     
-    // [핵심] 실제 GitHub Pages 주소로 연결
+    // [핵심] 실제 GitHub Pages 배포 주소 반영
     const baseUrl = "https://minimalsquare.github.io/safety-qr/view.html"; 
     const queryParams = `?n=${encodeURIComponent(name)}&p=${encodeURIComponent(phone)}&s=${encodeURIComponent(snsType)}&i=${encodeURIComponent(snsId)}&e=${encodeURIComponent(email)}`;
     const finalUrl = baseUrl + queryParams;
@@ -26,7 +24,7 @@ function generateQR() {
         height: 75,
         colorDark: "#000000", 
         colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.L
+        correctLevel: QRCode.CorrectLevel.L // 인식률 최적화
     });
 
     document.getElementById('result-area').style.display = 'block';
