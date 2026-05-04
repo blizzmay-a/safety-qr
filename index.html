@@ -15,9 +15,10 @@
         .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-top: 10px; }
         .btn-black:hover { opacity: 0.8; }
 
-        /* 결과 및 카드 레이아웃 */
-        #result-area { display: none; margin-top: 40px; text-align: center; }
+        /* QR 생성 전에는 숨겨져 있는 영역 */
+        #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
         
+        /* 카드 디자인 (8.5cm x 5.4cm) */
         #print-card { 
             width: 8.5cm; height: 5.4cm; 
             border: 1px solid #000; border-radius: 15px; 
@@ -29,30 +30,24 @@
         }
 
         .card-title { margin: 0 0 25px 0; font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
-        
         .field-row { display: flex; align-items: flex-end; margin-bottom: 12px; font-size: 11px; font-weight: bold; }
         .label { min-width: 130px; display: inline-block; }
         .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; min-height: 14px; }
 
-        /* QR 코드 영역 (회색 네모 위치) */
         #qrcode-wrapper {
             position: absolute; right: 0.5cm; top: 1.5cm;
             width: 85px; height: 85px; 
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* 인쇄 및 저장 버튼 그룹 */
         .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
         .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
 
-        /* 인쇄 설정 */
         @media print {
             body * { visibility: hidden; }
             #print-card, #print-card * { visibility: visible; }
-            #print-card { 
-                position: absolute; left: 0; top: 0; 
-                border: 1px solid #000 !important; 
-                box-shadow: none;
-            }
+            #print-card { position: absolute; left: 0; top: 0; border: 1px solid #000 !important; box-shadow: none; }
             @page { size: 8.5cm 5.4cm; margin: 0; }
         }
     </style>
@@ -73,16 +68,15 @@
         <button class="btn-black" onclick="generateQR()">Make QR Code</button>
     </div>
 
+    <!-- 버튼을 누르면 이 영역 전체가 나타납니다 -->
     <div id="result-area">
         <div id="print-card">
             <div class="card-title">Personal Identification</div>
-            
             <div class="field-row"><span class="label">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-name" class="line"></span></div>
             <div class="field-row"><span class="label">Phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-phone" class="line"></span></div>
             <div class="field-row"><span class="label">Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span><span id="p-email" class="line"></span></div>
             <div class="field-row" style="margin-top:15px;"><span class="label">SNS / Messenger&nbsp;&nbsp;&nbsp;:</span><span id="p-sns-type" class="line"></span></div>
             <div class="field-row"><span class="label">SNS / Messenger ID :</span><span id="p-sns-id" class="line"></span></div>
-
             <div id="qrcode-wrapper"><div id="qrcode"></div></div>
         </div>
 
