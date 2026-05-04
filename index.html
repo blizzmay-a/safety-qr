@@ -23,16 +23,16 @@
         .card-inner { padding: 0 0.5cm; }
         .card-title { margin: 0 0 8px 0; font-size: 16px; font-weight: 900; letter-spacing: 1px; }
         
-        /* [수정] 행간을 더 좁히기 위해 height와 margin-bottom 축소 */
-        .field-row { display: flex; align-items: flex-start; margin-bottom: 1px; font-size: 13.3px; font-weight: 400; height: 24px; }
-        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-top: 10px; } 
+        /* 조밀한 행간 유지 */
+        .field-row { display: flex; align-items: flex-start; margin-bottom: 1px; font-size: 13.3px; font-weight: 400; height: 26px; }
+        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-top: 12px; } 
         
-        /* [핵심 수정] 글자와 밑줄을 더 과감하게 하향 (margin-top 13px) */
+        /* [수정] 입력값과 밑줄을 더 과감하게 하향 */
         .line { 
             border-bottom: 1px solid #000; 
             flex-grow: 1; 
             padding-left: 5px; 
-            margin-top: 13px; /* 글자와 선을 더 아래로 배치 */
+            margin-top: 15px; /* 글자와 선의 위치를 더 내림 */
             padding-bottom: 1px; 
             margin-right: 85px; 
             white-space: nowrap; 
@@ -48,7 +48,7 @@
             border-bottom: 1px solid #000; 
             flex-grow: 1; 
             padding-left: 5px; 
-            margin-top: 13px; 
+            margin-top: 15px; 
             padding-bottom: 1px; 
             margin-right: 0; 
             white-space: nowrap; 
@@ -61,7 +61,8 @@
             display: inline-block; 
         }
 
-        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 1.6cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
+        /* [핵심 수정] QR 위치를 Name 밑줄 지점에 맞춰 하향 조정 */
+        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 2.1cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
         
         .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
         .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
