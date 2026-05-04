@@ -9,7 +9,7 @@ window.onload = function() {
         { key: 'p', valId: 'v-p', boxId: 'box-p' }
     ];
 
-    // 정보를 화면에 표시
+    // 1. 정보를 화면에 표시
     fields.forEach(field => {
         const value = params.get(field.key);
         const valElement = document.getElementById(field.valId);
@@ -21,15 +21,16 @@ window.onload = function() {
         }
     });
 
-    // 1. 전화 연결 기능
+    // 2. 전화 연결 기능
     const phone = params.get('p');
     const callBtn = document.getElementById('call-link');
     if (phone && phone.trim() !== "" && callBtn) {
         const cleanPhone = phone.replace(/[^0-9+]/g, "");
         callBtn.href = "tel:" + cleanPhone;
+        callBtn.style.display = "block"; // 전화번호가 있을 때만 버튼 표시
     }
 
-    // 2. 메일 연결 기능 (정민님의 상냥한 영어 메시지 탑재)
+    // 3. 메일 연결 기능 (정민님의 상냥한 메시지 탑재)
     const email = params.get('e');
     const mailBtn = document.getElementById('mail-link');
     if (email && email.trim() !== "" && mailBtn) {
@@ -37,5 +38,6 @@ window.onload = function() {
         const body = encodeURIComponent("Hello,\n\nI found your Minimal Square passport wallet.\nPlease let me know where I can return it to you or leave your contact number here.\n\nHave a wonderful day!");
         
         mailBtn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        mailBtn.style.display = "block"; // 메일 주소가 있을 때만 버튼 표시
     }
 };
