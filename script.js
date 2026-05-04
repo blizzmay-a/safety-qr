@@ -1,26 +1,50 @@
 function generateQR() {
     const name = document.getElementById('name').value.trim();
-    // ... (기존 변수들 생략) ...
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const snsType = document.getElementById('sns-type').value.trim(); // 직접 입력값
+    const snsId = document.getElementById('sns-id').value.trim();
+    const qrcodeContainer = document.getElementById('qrcode');
     const resultArea = document.getElementById('result-area');
 
     if (!name) { alert("Please enter your name."); return; }
 
-    // QR 코드 생성
-    document.getElementById('qrcode').innerHTML = "";
-    // (QR 생성 로직 동일)
-    new QRCode(document.getElementById('qrcode'), {
-        text: "연결주소...", 
+    // 1. QR 생성 (기존 로직 보강)
+    qrcodeContainer.innerHTML = "";
+    const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + "view.html";
+    const params = new URLSearchParams({ n: name, p: phone, e: email, s: snsType, i: snsId });
+    
+    new QRCode(qrcodeContainer, {
+        text: `${baseUrl}?${params.toString()}`,
         width: 85,
-        height: 85
+        height: 85,
+        colorDark: "#000000",
+        colorLight: "#ffffff"
     });
 
-    // 카드에 텍스트 채우기
+    // 2. 카드 미리보기 업데이트
     document.getElementById('p-name').innerText = name;
-    // ... (나머지 텍스트 채우기 생략) ...
+    document.getElementById('p-phone').innerText = phone;
+    document.getElementById('p-email').innerText = email;
+    document.getElementById('p-sns-type').innerText = snsType;
+    document.getElementById('p-sns-id').innerText = snsId;
 
-    // ★ 이 부분이 핵심입니다! 숨겨진 버튼과 카드를 화면에 보이게 만듭니다.
-    resultArea.style.display = "block"; 
+    // 3. ★ 결과 영역과 버튼 보이기
+    resultArea.style.display = "block";
 
-    // 인쇄 시 레이아웃이 깨지지 않게 화면 최하단으로 스크롤해주는 센스!
+    // 4. 다운로드 버튼 연결
+    setTimeout(() => {
+        const img = qrcodeContainer.querySelector('img');
+        if (img) {
+            document.getElementById('download-btn').onclick = function() {
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.download = `QR_${name}.png`;
+                link.click();
+            };
+        }
+    }, 500);
+
+    // 하단으로 스크롤
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
