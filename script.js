@@ -12,12 +12,12 @@ function generateQR() {
         return;
     }
 
-    // 2. 이메일 형식 검증 (추가된 로직)
+    // 2. 이메일 형식 정밀 검증 (수정된 로직)
     if (email !== "") {
-        // @와 .을 포함하는 표준 이메일 형식인지 확인하는 정규식
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // [문자]@ [문자]. [2글자 이상의 도메인] 형식을 검사합니다.
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
         if (!emailPattern.test(email)) {
-            alert("Please enter a valid Email Address (e.g., example@domain.com).");
+            alert("Please enter a complete Email Address (e.g., example@domain.com).");
             return;
         }
     }
@@ -38,7 +38,7 @@ function generateQR() {
         return;
     }
 
-    // 5. QR 코드 생성
+    // 5. QR 코드 생성 로직 (URL에만 데이터 저장)
     qrcodeContainer.innerHTML = "";
     const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + "view.html";
     
