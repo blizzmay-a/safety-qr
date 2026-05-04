@@ -69,47 +69,7 @@
         </div>
     </div>
 
-    <script>
-        function generateQR() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const snsType = document.getElementById('sns-type').value;
-            const snsId = document.getElementById('sns-id').value;
-            const email = document.getElementById('email').value;
 
-            document.getElementById('p-name').innerText = name;
-            document.getElementById('p-phone').innerText = phone;
-            document.getElementById('p-sns-type').innerText = snsType;
-            document.getElementById('p-sns-id').innerText = snsId;
-            document.getElementById('p-email').innerText = email;
-            
-            // [핵심] QR에 담을 뷰 페이지 URL 생성
-            // 실제 배포 주소로 변경하세요. 예: https://yourdomain.com/view.html
-            const baseUrl = "https://minimal-square.com/view.html"; 
-            const queryParams = `?n=${encodeURIComponent(name)}&p=${encodeURIComponent(phone)}&s=${encodeURIComponent(snsType)}&i=${encodeURIComponent(snsId)}&e=${encodeURIComponent(email)}`;
-            const finalUrl = baseUrl + queryParams;
-
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = ""; 
-            
-            new QRCode(qrContainer, {
-                text: finalUrl, // 뷰 페이지 주소를 담습니다.
-                width: 75, height: 75,
-                colorDark: "#000000", colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
-            document.getElementById('result-area').style.display = 'block';
-        }
-
-        document.getElementById('download-btn').addEventListener('click', function() {
-            const qrCanvas = document.querySelector('#qrcode canvas');
-            if (qrCanvas) {
-                const link = document.createElement('a');
-                link.download = 'minimal_square_qr.png';
-                link.href = qrCanvas.toDataURL();
-                link.click();
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
