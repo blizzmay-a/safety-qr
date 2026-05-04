@@ -1,113 +1,48 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Square | QR Maker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+function generateQR() {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const snsType = document.getElementById('sns-type').value;
+    const snsId = document.getElementById('sns-id').value;
+    const email = document.getElementById('email').value;
 
-        body { font-family: 'Noto Sans KR', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; background-color: #fff; color: #333; margin: 0; }
-        h1 { font-weight: 700; letter-spacing: -1px; margin-bottom: 25px; }
-        .input-group { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
-        input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-        .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-top: 10px; }
-        
-        #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
-        
-        #print-card { 
-            width: 8.5cm; height: 5.4cm; border: 1px solid #000; border-radius: 12px; 
-            padding: 0; box-sizing: border-box; background: #fff; margin: 0 auto; 
-            display: flex; flex-direction: column; justify-content: center;
-            position: relative; overflow: hidden; text-align: left;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
+    document.getElementById('p-name').innerText = name;
+    document.getElementById('p-phone').innerText = phone;
+    document.getElementById('p-sns-type').innerText = snsType;
+    document.getElementById('p-sns-id').innerText = snsId;
+    
+    // 메일 제목과 본문 설정
+    const mailSubject = "Found your Passport Wallet!";
+    // %0D%0A는 이메일 앱에서 인식하는 확실한 줄바꿈 코드입니다.
+    const mailBody = `Hello,%0D%0A%0D%0AI found your Minimal Square passport wallet.%0D%0APlease let me know where I can return it to you or leave your contact number here.%0D%0A%0D%0AHave a wonderful day!`;
+    
+    // 최종 mailto 링크 생성
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(mailSubject)}&body=${mailBody}`;
 
-        .card-inner { padding: 0 0.5cm; }
-        
-        /* 타이틀: 가장 강조 (Black 900) */
-        .card-title { 
-            margin: 0 0 16px 0; 
-            font-size: 16px; 
-            font-weight: 900; 
-            letter-spacing: -0.5px;
-        }
-        
-        /* 본문 행: 라벨 볼드 해제 (Regular 400) */
-        .field-row { 
-            display: flex; 
-            align-items: flex-end; 
-            margin-bottom: 7px; 
-            font-size: 13.3px; 
-            font-weight: 400; /* 라벨 볼드 해제 */
-            height: 19px; 
-        }
-        
-        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 2px; }
+    const emailElement = document.getElementById('p-email');
+    // 링크가 확실히 걸리도록 <a> 태그 속성을 강화했습니다.
+    emailElement.innerHTML = `<a href="${mailtoLink}" target="_top" style="text-decoration:none; color:inherit; cursor:pointer;">${email}</a>`;
 
-        /* 입력 데이터: 강조 (Bold 700) 및 9pt(12px) */
-        .line { 
-            border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px; 
-            min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; 
-            font-size: 12px; color: #000; 
-            font-weight: 700; /* 입력 데이터 볼드 처리 */
-            line-height: 1.2; vertical-align: bottom;
-        }
-        .line-full { 
-            border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; padding-bottom: 0px;
-            min-height: 16px; margin-right: 0; white-space: nowrap; overflow: hidden; 
-            font-size: 12px; color: #000; 
-            font-weight: 700; /* 입력 데이터 볼드 처리 */
-            line-height: 1.2; vertical-align: bottom;
-        }
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = ""; 
+    
+    new QRCode(qrContainer, {
+        text: mailtoLink,
+        width: 75,
+        height: 75,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
 
-        #qrcode-wrapper {
-            position: absolute; right: 0.4cm; top: 1.58cm; 
-            width: 75px; height: 75px;
-            display: flex; align-items: center; justify-content: center;
-        }
+    document.getElementById('result-area').style.display = 'block';
+}
 
-        .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
-        .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
-
-        @media print {
-            body * { visibility: hidden; }
-            #print-card, #print-card * { visibility: visible; }
-            #print-card { position: absolute; left: 0; top: 0; border: 1px solid #000 !important; box-shadow: none; }
-            @page { size: 8.5cm 5.4cm; margin: 0; }
-        }
-    </style>
-</head>
-<body>
-    <h1>Minimal Square</h1>
-    <div class="input-group">
-        <input type="text" id="name" placeholder="Name">
-        <input type="tel" id="phone" placeholder="Phone">
-        <input type="text" id="sns-type" placeholder="SNS / Messenger (e.g. Kakao, Insta)">
-        <input type="text" id="sns-id" placeholder="SNS / Messenger ID">
-        <input type="email" id="email" placeholder="Mail Address">
-        <button class="btn-black" onclick="generateQR()">Create QR Code</button>
-    </div>
-
-    <div id="result-area">
-        <div id="print-card">
-            <div class="card-inner">
-                <div class="card-title">Personal Identification</div>
-                <div class="field-row"><div class="label-container"><span>Name</span><span>:</span></div><span id="p-name" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>Phone</span><span>:</span></div><span id="p-phone" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>Social</span><span>:</span></div><span id="p-sns-type" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>ID</span><span>:</span></div><span id="p-sns-id" class="line"></span></div>
-                <div class="field-row" style="margin-top:10px;"><div class="label-container"><span>Mail</span><span>:</span></div><span id="p-email" class="line-full"></span></div>
-            </div>
-            <div id="qrcode-wrapper"><div id="qrcode"></div></div>
-        </div>
-
-        <div class="action-btns">
-            <button class="sub-btn" onclick="window.print()">Print Card</button>
-            <button id="download-btn" class="sub-btn">Save QR Image</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+document.getElementById('download-btn').addEventListener('click', function() {
+    const qrCanvas = document.querySelector('#qrcode canvas');
+    if (qrCanvas) {
+        const link = document.createElement('a');
+        link.download = 'minimal_square_qr.png';
+        link.href = qrCanvas.toDataURL();
+        link.click();
+    }
+});
