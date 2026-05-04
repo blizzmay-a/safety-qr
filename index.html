@@ -33,31 +33,35 @@
         
         .field-row { 
             display: flex; 
-            align-items: baseline; /* [수정] 아래쪽 정렬에서 베이스라인 정렬로 변경 */
+            align-items: flex-end; /* 바닥 기준 정렬 */
             margin-bottom: 7px; 
             font-size: 13.3px; 
             font-weight: 400; 
             height: 19px; 
         }
         
-        /* [수정] 라벨 하단 패딩 제거하여 높이 정렬 */
-        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 0; }
+        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 2px; }
 
+        /* [수정] 오른쪽 입력값 영역을 1px 더 낮춤 */
         .line { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; 
-            padding-bottom: 0px; /* [수정] 텍스트를 위로 올리기 위해 패딩 제거 */
+            padding-top: 1px; /* 상단 패딩 1px 추가하여 글자를 아래로 밀어냄 */
+            padding-bottom: 0px; 
             min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; 
             font-size: 13.3px; color: #000; 
             font-weight: 400; 
             line-height: 1.2;
+            vertical-align: bottom;
         }
         .line-full { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; 
-            padding-bottom: 0px; /* [수정] 텍스트를 위로 올리기 위해 패딩 제거 */
+            padding-top: 1px; /* 상단 패딩 1px 추가 */
+            padding-bottom: 0px; 
             min-height: 16px; margin-right: 0; white-space: nowrap; overflow: hidden; 
             font-size: 13.3px; color: #000; 
             font-weight: 400; 
             line-height: 1.2;
+            vertical-align: bottom;
         }
 
         #qrcode-wrapper { 
