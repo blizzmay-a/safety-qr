@@ -1,49 +1,49 @@
 function generateQR() {
     const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
     const snsType = document.getElementById('sns-type').value;
     const snsId = document.getElementById('sns-id').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
     const qrcodeContainer = document.getElementById('qrcode');
 
-    // 1. 이름 검증
-    if (!name) { alert("이름을 입력해 주세요."); return; }
+    if (!name) {
+        alert("Please enter your name.");
+        return;
+    }
 
-    // 2. 이메일 형식 정밀 검증
+    // 1. 이메일 형식 검증 (선택 입력이지만 입력 시 체크)
     if (email !== "") {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
         if (!emailPattern.test(email)) {
-            alert("올바른 이메일 형식을 입력해 주세요. (예: example@domain.com)");
+            alert("Please enter a valid email address.");
             return;
         }
     }
 
-    // 3. QR 생성
+    // 2. QR 코드 생성
     qrcodeContainer.innerHTML = "";
-    // 현재 주소를 기반으로 view.html 경로 생성
     const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '') + "view.html";
-    const params = new URLSearchParams({ n: name, s: snsType, i: snsId, e: email, p: phone });
+    const params = new URLSearchParams({ n: name, p: phone, e: email, s: snsType, i: snsId });
     
-    const finalUrl = `${baseUrl}?${params.toString()}`;
-
     new QRCode(qrcodeContainer, {
-        text: finalUrl,
-        width: 100,
-        height: 100,
-        colorDark: "#000000",
-        colorLight: "#ffffff"
+        text: `${baseUrl}?${params.toString()}`,
+        width: 85,
+        height: 85,
+        colorDark : "#000000",
+        colorLight : "#ffffff"
     });
 
-    // 4. 인쇄용 카드 데이터 매칭
+    // 3. 카드 서식에 텍스트 채우기
     document.getElementById('p-name').innerText = name;
-    document.getElementById('p-phone').innerText = phone || "";
-    document.getElementById('p-sns').innerText = snsId ? `${snsType}: ${snsId}` : "";
-    document.getElementById('p-email').innerText = email || "";
+    document.getElementById('p-phone').innerText = phone;
+    document.getElementById('p-email').innerText = email;
+    document.getElementById('p-sns-type').innerText = snsType;
+    document.getElementById('p-sns-id').innerText = snsId;
 
-    // 결과 화면 표시
+    // 4. 결과창 표시
     document.getElementById('result-area').style.display = "block";
 
-    // 5. 다운로드 버튼 활성화 (QR 생성 후 이미지가 렌더링될 시간 필요)
+    // 5. QR 다운로드 기능 연결
     setTimeout(() => {
         const img = qrcodeContainer.querySelector('img');
         if (img) {
