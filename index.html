@@ -25,16 +25,44 @@
         .card-inner { padding: 0 0.5cm; }
         .card-title { margin: 0 0 16px 0; font-size: 16px; font-weight: 900; letter-spacing: 1px; }
         
-        /* 정렬 수정: 입력 정보와 라벨의 수평을 맞추기 위해 align-items 조정 */
-        .field-row { display: flex; align-items: baseline; margin-bottom: 7px; font-size: 13.3px; font-weight: 400; height: 19px; }
+        /* 수평 정렬 조정 */
+        .field-row { display: flex; align-items: baseline; margin-bottom: 7px; font-size: 13.3px; font-weight: 400; height: 21px; }
         .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; }
         
-        /* 선 위치 및 텍스트 높이 미세 조정 */
-        .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; margin-right: 85px; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1; display: inline-block; }
-        .line-full { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; margin-right: 0; white-space: nowrap; overflow: hidden; font-size: 13.3px; color: #000; font-weight: 700; line-height: 1; display: inline-block; }
+        /* [수정] 글자는 2px 내리고, 밑줄은 더 넉넉하게 배치 */
+        .line { 
+            border-bottom: 1px solid #000; 
+            flex-grow: 1; 
+            padding-left: 5px; 
+            padding-top: 2px; /* 글자를 미세하게 내림 */
+            padding-bottom: 3px; /* 밑줄을 글자로부터 더 떼어냄 */
+            margin-right: 85px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            font-size: 13.3px; 
+            color: #000; 
+            font-weight: 700; 
+            line-height: 1; 
+            display: inline-block;
+        }
+        .line-full { 
+            border-bottom: 1px solid #000; 
+            flex-grow: 1; 
+            padding-left: 5px; 
+            padding-top: 2px; 
+            padding-bottom: 3px; 
+            margin-right: 0; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            font-size: 13.3px; 
+            color: #000; 
+            font-weight: 700; 
+            line-height: 1; 
+            display: inline-block;
+        }
 
-        /* QR 위치 수정: Name 라인의 밑줄 지점으로 하향 조정 */
-        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 1.95cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
+        /* QR 위치: Name 라인 시작 지점과 조화롭게 배치 */
+        #qrcode-wrapper { position: absolute; right: 0.4cm; top: 1.85cm; width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }
         
         .action-btns { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
         .sub-btn { padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1.5px solid #000; background: #fff; font-weight: 600; }
