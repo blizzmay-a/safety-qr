@@ -11,34 +11,32 @@
         h1 { font-weight: 700; letter-spacing: -1px; margin-bottom: 20px; font-family: sans-serif; }
         .input-group { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         input { padding: 12px; border: 1px solid #eee; border-radius: 6px; font-size: 14px; font-family: inherit; }
-        .btn-black { background: #000; color: #fff; padding: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 5px; font-family: sans-serif; }
+        .btn-black { background: #000; color: #fff; padding: 15px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 5px; font-family: sans-serif; }
         
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
         #print-card { 
             width: 8.5cm; height: 5.4cm; border: 1px solid #333; border-radius: 20px; 
             padding: 0; box-sizing: border-box; background: #fff; margin: 0 auto; 
             position: relative; overflow: hidden;
-            display: flex; flex-direction: column; justify-content: center; /* 상하 중앙 정렬 */
+            display: block; /* [복구] 가운데 정렬 해제 및 상단 기준 배치 */
         }
         
-        /* [수정] 상하 여백 균등화 및 내부 패딩 최적화 */
         .card-inner { 
-            padding: 0 0.8cm; 
+            padding: 0.8cm 0.8cm; /* [복구] 상단 여백 확보 */
             display: flex; 
             flex-direction: column; 
-            height: auto; 
         }
         
-        /* [수정] 제목 크기 축소 및 하단 여백 고정 */
-        .card-title { font-size: 18px; font-weight: 400; margin: 0 0 25px 0; letter-spacing: 0.5px; }
+        /* [수정] 제목 무조건 한 줄 고정, 볼드 없음 */
+        .card-title { font-size: 20px; font-weight: 400; margin: 0 0 35px 0; letter-spacing: 0px; white-space: nowrap; overflow: hidden; }
         
-        /* [수정] 모든 행의 높이와 간격을 동일하게 고정 */
+        /* [수정] 행간을 칼같이 통일 (22px 높이, 5px 간격) */
         .field-row { 
             display: flex; 
             align-items: flex-end; 
             width: 100%; 
-            height: 22px; /* 행 높이 고정 */
-            margin-bottom: 6px; /* 행간 간격 통일 */
+            height: 22px; 
+            margin-bottom: 5px; 
         }
         
         .label-container { 
@@ -51,16 +49,15 @@
             padding-bottom: 2px;
         }
         
-        /* [수정] 밑줄 간격 및 두께 정밀 일치 */
         .line { 
             border-bottom: 1px solid #333; 
             flex-grow: 1; 
             padding-left: 8px; 
-            margin-right: 85px; /* QR 공간 확보 */
+            margin-right: 90px; 
             font-size: 14px; 
             font-weight: 400; 
             line-height: 1.2;
-            height: 16px;
+            height: 17px;
             display: inline-block;
         }
         
@@ -71,15 +68,15 @@
             font-size: 14px; 
             font-weight: 400; 
             line-height: 1.2;
-            height: 16px;
+            height: 17px;
             display: inline-block;
         }
 
-        /* [핵심 수정] QR 코드를 아래로 내려 상단 여백(노란 원 영역) 확보 */
+        /* [핵심] QR 위치를 제목 아래로 확실히 내려 상단 우측 여백 확보 */
         #qrcode-wrapper { 
             position: absolute; 
             right: 0.8cm; 
-            bottom: 0.9cm; /* 바닥 기준으로 위치를 잡아 상단 여백 확보 */
+            top: 2.3cm; /* 제목과 겹치지 않게 충분히 하향 조정 */
             width: 72px; 
             height: 72px; 
             display: flex; 
