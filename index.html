@@ -24,7 +24,7 @@
 
         .card-inner { padding: 0 0.5cm; }
         
-        /* [수정] 제목 자간 0.5px 추가 */
+        /* 제목 자간 0.5px 유지 */
         .card-title { 
             margin: 0 0 16px 0; 
             font-size: 16px; 
@@ -43,27 +43,29 @@
         
         .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-bottom: 2px; }
 
-        /* [수정] 입력값과 밑줄을 약 2px 상향 (padding-bottom 조정) */
+        /* [수정] 입력값과 밑줄 높이 1px 하향 및 볼드 제거 */
         .line { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; 
-            padding-bottom: 2px; /* 0px에서 2px로 변경하여 텍스트와 선을 올림 */
+            padding-bottom: 1px; /* 2px에서 1px로 조정하여 높이 보정 */
             min-height: 16px; margin-right: 85px; white-space: nowrap; overflow: hidden; 
-            font-size: 13.3px; color: #000; font-weight: 700;
+            font-size: 13.3px; color: #000; 
+            font-weight: 400; /* [수정] 볼드(700) 제거 */
             line-height: 1.2; vertical-align: bottom;
         }
         .line-full { 
             border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; 
-            padding-bottom: 2px; 
+            padding-bottom: 1px; 
             min-height: 16px; margin-right: 0; white-space: nowrap; overflow: hidden; 
-            font-size: 13.3px; color: #000; font-weight: 700;
+            font-size: 13.3px; color: #000; 
+            font-weight: 400; /* [수정] 볼드(700) 제거 */
             line-height: 1.2; vertical-align: bottom;
         }
 
-        /* [수정] QR 위치를 추가로 하향하여 ID 라인 밑줄과 정밀 일치 */
+        /* 만족하셨던 QR 위치 유지 */
         #qrcode-wrapper { 
             position: absolute; 
             right: 0.4cm; 
-            top: 1.85cm; /* 1.78cm에서 추가 하향 조정 */
+            top: 1.85cm; 
             width: 75px; 
             height: 75px; 
             display: flex; 
@@ -121,13 +123,7 @@
 
             if (!name) { alert("이름을 입력해주세요."); return; }
             if (!phone && !email && !snsType && !snsId) { alert("연락처를 하나 이상 입력해주세요."); return; }
-            
-            // 이메일 정규표현식 검증 (@와 . 포함)
-            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
-                alert("올바른 이메일 형식이 아닙니다."); 
-                return; 
-            }
-            
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("올바른 이메일 형식이 아닙니다."); return; }
             if ((snsType && !snsId) || (!snsType && snsId)) { alert("SNS 정보를 모두 입력해주세요."); return; }
 
             document.getElementById('p-name').innerText = name;
