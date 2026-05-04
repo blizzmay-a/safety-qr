@@ -25,21 +25,20 @@
         .card-inner { padding: 0 0.5cm; }
         .card-title { margin: 0 0 15px 0; font-size: 17px; font-weight: bold; }
         
-        /* 공통 줄 설정 */
         .field-row { display: flex; align-items: flex-end; margin-bottom: 8px; font-size: 11px; font-weight: bold; height: 16px; }
         
-        /* 라벨 영역: 가장 긴 'SNS / Messenger ID' 길이에 맞춰 콜론 위치 통일 */
-        .label-container { display: flex; width: 135px; justify-content: space-between; flex-shrink: 0; }
-        
-        /* 일반 줄: QR 코드에 가려지지 않게 여백(margin-right) 부여 */
+        /* 정민님 요청 반영: 라벨 폭을 고정하지 않고 각자 단어 뒤에 바로 콜론 배치 */
+        /* 대신 밑줄 시작점을 맞추기 위해 전체 행에 일정한 여백 구조 적용 */
+        .label-text { min-width: 135px; display: inline-block; } /* 콜론을 포함한 라벨 전체 폭만 고정 */
+
+        /* 일반 줄: QR 코드 영역 확보 */
         .line { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; min-height: 14px; margin-right: 85px; white-space: nowrap; overflow: hidden; }
 
-        /* 마지막 Mail 줄: QR 코드 아래 빈 공간을 활용하여 카드 끝까지 연장 */
+        /* 마지막 Mail 줄: 카드 끝까지 길게 */
         .line-full { border-bottom: 1px solid #000; flex-grow: 1; padding-left: 5px; min-height: 14px; margin-right: 0; white-space: nowrap; overflow: hidden; }
 
-        /* QR 코드 위치: 위로 살짝 올림 (Mail 줄 확보) */
         #qrcode-wrapper {
-            position: absolute; right: 0.4cm; top: 1.3cm; /* 위치 상향 조정 */
+            position: absolute; right: 0.4cm; top: 1.3cm;
             width: 75px; height: 75px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -71,14 +70,14 @@
             <div class="card-inner">
                 <div class="card-title">Personal Identification</div>
                 
-                <!-- 상단 4개 항목: QR에 가려지지 않도록 margin-right 적용 -->
-                <div class="field-row"><div class="label-container"><span>Name</span><span>:</span></div><span id="p-name" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>Phone</span><span>:</span></div><span id="p-phone" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>SNS / Messenger</span><span>:</span></div><span id="p-sns-type" class="line"></span></div>
-                <div class="field-row"><div class="label-container"><span>SNS / Messenger ID</span><span>:</span></div><span id="p-sns-id" class="line"></span></div>
+                <!-- 노란 공백을 없애기 위해 각 텍스트 바로 뒤에 콜론 배치 -->
+                <div class="field-row"><span class="label-text">Name :</span><span id="p-name" class="line"></span></div>
+                <div class="field-row"><span class="label-text">Phone :</span><span id="p-phone" class="line"></span></div>
+                <div class="field-row"><span class="label-text">SNS / Messenger :</span><span id="p-sns-type" class="line"></span></div>
+                <div class="field-row"><span class="label-text">SNS / Messenger ID :</span><span id="p-sns-id" class="line"></span></div>
                 
-                <!-- 가장 아랫줄 Mail: 카드 전체 폭을 사용하여 길게 확보 -->
-                <div class="field-row" style="margin-top:10px;"><div class="label-container"><span>Mail</span><span>:</span></div><span id="p-email" class="line-full"></span></div>
+                <!-- Mail 줄은 길게 -->
+                <div class="field-row" style="margin-top:10px;"><span class="label-text">Mail :</span><span id="p-email" class="line-full"></span></div>
             </div>
             
             <div id="qrcode-wrapper"><div id="qrcode"></div></div>
