@@ -10,6 +10,7 @@ window.onload = function() {
         p: urlParams.get('p')  // Phone
     };
 
+
     function showField(val, targetId, boxId) {
         const target = document.getElementById(targetId);
         const box = document.getElementById(boxId);
