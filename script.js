@@ -1,20 +1,24 @@
 function generateQR() {
-    // ... 데이터 가져오는 부분 동일 ...
+    // 입력값 가져오기
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
     const snsType = document.getElementById('sns-type').value;
     const snsId = document.getElementById('sns-id').value;
     const email = document.getElementById('email').value;
 
-    // 1. View 페이지 URL 생성 (도메인이 있다면 도메인을, 테스트용이라면 파일명을 넣으세요)
-    // 쿼리 파라미터를 정민님의 view.js 키값(n, s, i, e, p)에 맞췄습니다.
-    const baseUrl = "https://본인의도메인.com/view.html"; // 실제 배포될 URL로 수정 필요
+    // 카드 미리보기 텍스트 업데이트
+    document.getElementById('p-name').innerText = name;
+    document.getElementById('p-phone').innerText = phone;
+    document.getElementById('p-sns-type').innerText = snsType;
+    document.getElementById('p-sns-id').innerText = snsId;
+    document.getElementById('p-email').innerText = email;
+
+    // 1. View 페이지 URL 생성 (배포 후 실제 도메인 주소로 수정 필수)
+    const baseUrl = "https://minimal-square.com/view.html"; 
     const queryParams = `?n=${encodeURIComponent(name)}&p=${encodeURIComponent(phone)}&s=${encodeURIComponent(snsType)}&i=${encodeURIComponent(snsId)}&e=${encodeURIComponent(email)}`;
     const finalUrl = baseUrl + queryParams;
 
-    // ... 카드 텍스트 업데이트 부분 동일 ...
-
-    // 2. QR 코드 생성 (이제 mailto가 아니라 URL을 넣습니다!)
+    // 2. QR 코드 생성 (웹페이지 URL을 담음)
     const qrContainer = document.getElementById('qrcode');
     qrContainer.innerHTML = ""; 
     new QRCode(qrContainer, {
@@ -26,3 +30,14 @@ function generateQR() {
 
     document.getElementById('result-area').style.display = 'block';
 }
+
+// 이미지 저장 기능
+document.getElementById('download-btn').addEventListener('click', function() {
+    const qrCanvas = document.querySelector('#qrcode canvas');
+    if (qrCanvas) {
+        const link = document.createElement('a');
+        link.download = 'minimal_square_qr.png';
+        link.href = qrCanvas.toDataURL();
+        link.click();
+    }
+});
