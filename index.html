@@ -23,17 +23,15 @@
         .card-inner { padding: 0 0.5cm; }
         .card-title { margin: 0 0 10px 0; font-size: 16px; font-weight: 900; letter-spacing: 1px; }
         
-        /* 전체적인 행간 높이 확보 */
         .field-row { display: flex; align-items: flex-start; margin-bottom: 3px; font-size: 13.3px; font-weight: 400; height: 26px; }
-        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-top: 8px; } /* 라벨 위치 살짝 조정 */
+        .label-container { display: flex; width: 55px; justify-content: space-between; flex-shrink: 0; margin-right: 5px; padding-top: 8px; } 
         
-        /* [핵심] 글자를 8px 내리고 밑줄과의 간격을 최적화 */
         .line { 
             border-bottom: 1px solid #000; 
             flex-grow: 1; 
             padding-left: 5px; 
-            margin-top: 8px; /* 글자 위치를 확실히 하향 */
-            padding-bottom: 2px; /* 밑줄과의 여유 공간 */
+            margin-top: 8px; 
+            padding-bottom: 2px; 
             margin-right: 85px; 
             white-space: nowrap; 
             overflow: hidden; 
@@ -75,7 +73,8 @@
     <h1>Minimal Square</h1>
     <div class="input-group">
         <input type="text" id="name" placeholder="Name">
-        <input type="tel" id="phone" placeholder="Phone">
+        <!-- [수정] 숫자, +, - 만 입력 가능하도록 oninput 이벤트 추가 -->
+        <input type="text" id="phone" placeholder="Phone" oninput="this.value = this.value.replace(/[^0-9+\-]/g, '')">
         <input type="text" id="sns-type" placeholder="Social">
         <input type="text" id="sns-id" placeholder="ID">
         <input type="email" id="email" placeholder="Mail Address">
